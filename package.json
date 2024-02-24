@@ -1,0 +1,19 @@
+{
+  "name": "@tide/backend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "stream:setup": "bash initialize.sh && yarn stream:dependencies && yarn install",
+    "stream:clean": "rm -rf ../packages/mock-client ../packages/streamdapp-client",
+    "stream:reset": "yarn stream:clean && yarn stream:setup",
+    "stream:dependencies": "cargo build --target wasm32-unknown-unknown --release && soroban contract bindings typescript --wasm ./target/wasm32-unknown-unknown/release/soroban_stream_contract.wasm --id $(cat ./.stream-payment-dapp/streamdapp_id) --output-dir ../packages/streamdapp-client --network $(cat ./.stream-payment-dapp/network) && soroban contract bindings typescript --wasm ./target/wasm32-unknown-unknown/release/mock_token.wasm --id $(cat ./.stream-payment-dapp/mock_token_id) --output-dir ../packages/mock-client --network $(cat ./.stream-payment-dapp/network)"
+  },
+  "devDependencies": {
+    "@types/node": "20.5.0",
+    "typescript": "5.1.6"
+  },
+  "engines": {
+    "node": ">=18.14.2",
+    "npm": ">=9.5.0"
+  }
+}
