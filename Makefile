@@ -1,40 +1,26 @@
-all: check build test
+default: build
 
-CARGO_BUILD_TARGET?=wasm32-unknown-unknown
+test: build
+	cargo test --all --tests
 
-test: fmt
-	cargo test
-
-build: fmt
-	cargo build --target $(CARGO_BUILD_TARGET) --no-default-features --release
-	cd target/$(CARGO_BUILD_TARGET)/release/ && \
+build:
+	cargo rustc --manifest-path=stream/Cargo.toml --crate-type=cdylib --target=wasm32-unknown-unknown --release
+	mkdir -p target/wasm32-unknown-unknown/optimized
+	soroban contract optimize \
+		--wasm target/wasm32-unknown-unknown/release/stream.wasm \
+		--wasm-out target/wasm32-unknown-unknown/optimized/stream.wasm
+	cd target/wasm32-unknown-unknown/optimized/ && \
 		for i in *.wasm ; do \
 			ls -l "$$i"; \
 		done
-
-build-optimized: fmt
-	CARGO_TARGET_DIR=target-tiny cargo +nightly build --target $(CARGO_BUILD_TARGET) --release \
-		-Z build-std=std,panic_abort \
-		-Z build-std-features=panic_immediate_abort
-	cd target-tiny/$(CARGO_BUILD_TARGET)/release/ && \
-		for i in *.wasm ; do \
-			wasm-opt -Oz "$$i" -o "$$i.tmp" && mv "$$i.tmp" "$$i"; \
-			ls -l "$$i"; \
-		done
-
-build-docker:
-	docker build . --tag soroban-preview:10
-
-check: fmt
-	cargo clippy --all-targets
-	cargo clippy --release --target $(CARGO_BUILD_TARGET)
-
-watch:
-	cargo watch --clear --watch-when-idle --shell '$(MAKE)'
 
 fmt:
 	cargo fmt --all
 
 clean:
 	cargo clean
-	CARGO_TARGET_DIR=target-tiny cargo +nightly clean
+
+generate-js:
+	soroban contract bindings typescript --overwrite \
+		--contract-id CAATXU6OCY3BHIIY44NN73LM3PRAQSEU2ASNZ43XNAFECAENPVSRJEBJ \
+		--wasm ./target/wasm32-unknown-unknown/optimized/stream.wasm --output-dir ./js/js-stream/

@@ -1,32 +1,51 @@
-Soroban Dapp Backend
-=================================
+# Zentra Protocol
 
-This is a Soroban Smart Contract project showing how to stream payments to each other and resolve a name to a soroban address. It is built using [Soroban](https://soroban.stellar.org/), [Next.js](https://nextjs.org/) and [TypeScript](https://www.typescriptlang.org/).
+This repository contains the smart contracts for an implementation of the Zentra Protocol. Zentra is a payment streaming protocol built on the Stellar Soroban Blockchain network, enabling seamless and continuous payment streams between parties.
 
-Getting Started
-===============
+## Documentation
 
-Install Dependencies
---------------------
-1. `rustc` >= 1.71.0 with the `wasm32-unknown-unknown` target installed. See https://soroban.stellar.org/docs/getting-started/setup#install-rust . If you have already a lower version, the easiest way to upgrade is to uninstall (`rustup self uninstall`) and install it again.
-2. `soroban-cli`. See https://soroban.stellar.org/docs/getting-started/setup#install-the-soroban-cli, but instead of `cargo install soroban-cli`, run `cargo install_soroban`. This is an alias set up in [.cargo/config.toml](./.cargo/config.toml), which pins the local soroban-cli to a specific version. If you add `./target/bin/` [to your PATH](https://linuxize.com/post/how-to-add-directory-to-path-in-linux/), then you'll automatically use this version of `soroban-cli` when you're in this directory.
+To learn more about the Zentra Protocol and how to integrate it into your applications, visit the documentation:
 
-## Run the Stream Payment backend
------------
+- [Zentra Docs](https://docs.thezentra.com/)
 
-Make sure to start from a clean setup:
+## Audits
+
+At present, no audits have been performed for the protocol. Outcomes will be provided upon completion of an audit.
+
+## Getting Started
+
+To build the contracts, follow these steps:
+
+```bash
+make
 ```
-yarn stream:clean
+
+To run all unit tests and the integration test suite, use the following command:
+
+```bash
+make test
 ```
 
-### Deploy on Futurenet
+## Deployment
 
-0. Make sure you have soroban-cli installed, as explained above
+Running the make command generates both optimized and unoptimized versions of the WASM contracts. It is advisable to deploy the optimized version to the network for better performance.
 
-1. Deploy the contracts and initialize them
+You can find the contracts at the following path:
 
-       yarn stream:setup
+``` bash
+target/wasm32-unknown-unknown/optimized
+```
 
-   This runs `./initialize.sh futurenet` behind the scenes, which will create a `token-admin` identity for you (`soroban config identity create token-admin`) and deploy a Fungible Token contract as well as the [payment stream contract](./contracts/stream), with this account as admin.
+For assistance with deployment to the network, refer to the [Zentra Utils](https://github.com/the-zentra/zentra-utils) repository.
 
-2. Select the Futurenet network in your Freighter browser extension
+## Contributing
+
+Notes for contributors:
+
+- Ensure that the "overflow-checks" flag is not removed, as it maintains the safety of contract math operations.
+
+## Community Links
+
+Here are some community links related to Zentra:
+
+- [Zentra Discord](https://discord.com)

@@ -1108,14 +1108,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "soroban-stream-contract"
-version = "0.1.0"
-dependencies = [
- "fixed-point-math",
- "soroban-sdk",
-]
-
-[[package]]
 name = "soroban-token-sdk"
 version = "20.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1184,6 +1176,14 @@ dependencies = [
  "serde",
  "serde_with",
  "stellar-strkey",
+]
+
+[[package]]
+name = "stream"
+version = "0.1.0"
+dependencies = [
+ "fixed-point-math",
+ "soroban-sdk",
 ]
 
 [[package]]
