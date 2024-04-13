@@ -17,5 +17,6 @@ pub enum StreamError {
 
     // Stream specific errors
     StreamDoesNotExist = 200,
+    ExceedsStreamedAmount = 201,
     
 }

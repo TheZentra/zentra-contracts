@@ -115,7 +115,7 @@ impl DirectStream for DirectStreamContract {
     }
 
     /// Returns the status of the stream.
-    fn stream_status(e: Env, stream_id: u32) -> Option<Status> {
+    fn status(e: Env, stream_id: u32) -> Option<Status> {
         let stream_resp = storage::get_stream(&e, &stream_id);
 
         if stream_resp.is_none() {
@@ -220,7 +220,7 @@ impl DirectStream for DirectStreamContract {
         stream_id
     }
 
-    fn withdraw_from_stream(
+    fn withdraw(
         e: Env,
         caller: Address,
         recipient: Address,
@@ -246,10 +246,9 @@ impl DirectStream for DirectStreamContract {
         require_recipient(&stream, &recipient);
 
         let streamed_amount = get_streamed_amount(&e, &stream);
-        assert!(
-            amount >= streamed_amount,
-            "amount exceeds the streamed amount"
-        );
+        if amount > streamed_amount {
+            panic_with_error!(&e, StreamError::ExceedsStreamedAmount);
+        };
 
         stream.withdrawn = stream.withdrawn + amount;
 
@@ -272,7 +271,7 @@ impl DirectStream for DirectStreamContract {
     /// Throws if there is a token transfer failure.
     /// @param stream_id The id of the stream to cancel.
     /// @return bool true=success, otherwise false.
-    fn cancel_stream(e: Env, caller: Address, stream_id: u32) {
+    fn cancel(e: Env, caller: Address, stream_id: u32) {
         caller.require_auth();
         let stream = storage::get_stream(&e, &stream_id);
 

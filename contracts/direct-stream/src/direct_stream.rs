@@ -29,7 +29,7 @@ pub trait DirectStream {
 
     fn streamed_amount(e: Env, stream_id: u32) -> i128;
 
-    fn stream_status(e: Env, stream_id: u32) -> Option<Status>; 
+    fn status(e: Env, stream_id: u32) -> Option<Status>; 
 
     fn create_range(
         e: Env,
@@ -43,7 +43,7 @@ pub trait DirectStream {
         cliff_time: u64,
     ) -> u32;
 
-    fn withdraw_from_stream(
+    fn withdraw(
         e: Env,
         caller: Address,
         recipient: Address,
@@ -51,5 +51,5 @@ pub trait DirectStream {
         amount: i128,
     );
 
-    fn cancel_stream(e: Env, caller: Address, stream_id: u32);
+    fn cancel(e: Env, caller: Address, stream_id: u32);
 }
