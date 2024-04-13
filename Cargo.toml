@@ -2,8 +2,9 @@
 resolver = "2"
 
 members = [
-    "stream",
-    "mocks/mock-token"
+    "contracts/direct-stream",
+    "contracts/mocks/mock-token",
+    "contracts/test-suites"
 ]
 
 [profile.release]
@@ -16,7 +17,14 @@ panic = "abort"
 codegen-units = 1
 lto = true
 
-[workspace.dependencies]
-soroban-sdk = "20.0.3"
-soroban-token-sdk = "20.0.3"
-fixed-point-math = "0.0.2"
+[workspace.dependencies.soroban-sdk]
+version = "20.5.0"
+
+[workspace.dependencies.soroban-fixed-point-math]
+version = "1.0.0"
+
+[workspace.dependencies.sep-41-token]
+version = "1.0.0"
+
+[workspace.dependencies.soroban-token-sdk]
+version = "20.5.0"

@@ -1,0 +1,1 @@
+pub(crate) const ONE_DAY_LEDGERS: u32 = 17280;
